@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="row">
+    <table class="table table-hover test">
+        <tr>
+            <th>Name</th>
+            <th>Rating</th>
+            <th>Profile</th>
+        </tr>
+        {% for item in query  %}
+        <tr>
+            <td>{{ item.display_name }}</td>
+            <td>{{ item.normalized_rating }}</td>
+            <td><a href="/members/{{item.display_name }}">Take Me there</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+    </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        var addNumeration = function(cl){
+          var table = document.querySelector('table.' + cl)
+          var trs = table.querySelectorAll('tr')
+          var counter = 1
+
+          Array.prototype.forEach.call(trs, function(x,i){
+            var firstChild = x.children[0]
+            if (firstChild.tagName === 'TD') {
+              var cell = document.createElement('td')
+              cell.textContent = counter ++
+              x.insertBefore(cell,firstChild)
+            } else {
+              var cell = document.createElement('th')
+              cell.textContent = "#"
+              x.insertBefore(cell,firstChild)
+            }
+          })
+        }
+
+        addNumeration("test")
+    </script>
+{%  endblock %}

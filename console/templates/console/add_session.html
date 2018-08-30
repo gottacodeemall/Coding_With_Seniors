@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+        <div class="container">
+        <div class="row">
+        <div class="col">
+            <div class="card card-block">
+                <form method="post" action="" id="form-login2">
+                    <fieldset>
+                        {% for fieldz in session_form %}
+                            <div class="md-form {% if fieldz.errors %}has-error{% endif %}">
+                                {{ fieldz }}
+                                <label for="id_{{ fieldz.name }}">{{ fieldz.label }}</label>
+                                {% for error in fieldz.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <button class="btn btn-default" type="submit" name="add_session">Add/Modify Session</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+        <div class="col">
+            {% if not add %}
+                <h3 style="margin: 20px">Update Ranks and Leaderboard</h3>
+                <a href="/console/update_leaderboard/{{ session.name }}"><button class="btn btn-default" style="margin-bottom: 20px">Add&Update</button></a>
+            {%  endif %}
+        </div>
+        </div>
+
+    </div>
+    </div>
+        <div class="row">
+        <div class="col">
+            {% if not add %}
+                <h3>Problems</h3>
+                <table class="table table-hover test">
+                    <tr>
+                        <th>Name</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for item in problems  %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td><a href="/console/edit/problem/{{item.name }}">Take Me there</a></td>
+                        <td><a href="/console/do_not_use/problem/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                 </table>
+            {%  endif %}
+        </div>
+        </div>
+    <div class="row">
+        <div class="col">
+            {% if not add %}
+                <a href="/console/add/problem/{{ session.name }}"><button class="btn btn-default">Add Problem</button></a>
+            {%  endif %}
+        </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        $( function() {$('#id_date').datepicker({ dateFormat: 'yy-mm-dd' });} );
+    </script>
+{% endblock %}

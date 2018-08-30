@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+    <div class="row">
+        <div class="col">
+            <div class="card card-block">
+                <form method="post" action="" id="form-login">
+                    <fieldset>
+                        {% for field in event_form %}
+                            <div class="md-form {% if field.errors %}has-error{% endif %}">
+                                {{ field }}
+                                <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                {% for error in field.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <button class="btn btn-default" type="submit" name="add_event">Add/Modify Event</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% if not add %}
+                <a href="/console/add/session/{{ event.name }}"><button class="btn btn-default">Add Session</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+
+        $( function() {
+            $('#id_date').datepicker({ dateFormat: 'yy-mm-dd' });
+        } );
+    </script>
+{% endblock %}

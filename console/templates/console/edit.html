@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Instructions</h3>
+            <p></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Events</h3>
+            <table class="table table-hover test">
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                {% for item in events  %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.date }}</td>
+                    <td><a href="/console/edit/event/{{item.name }}">Modify</a></td>
+                    <td><a href="/console/do_not_use/event/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        <a href="/console/add/event"><button class="btn btn-default">Add Event</button></a>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        <h3>Sessions</h3>
+        <table class="table table-hover test">
+            <tr>
+                <th>Name</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for item in sessions  %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.event.name }}</td>
+                <td>{{ item.date }}</td>
+                <td><a href="/console/edit/session/{{item.name }}">Take Me there</a></td>
+                <td><a href="/console/do_not_use/session/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Problems</h3>
+            <table class="table table-hover test">
+                <tr>
+                    <th>Name</th>
+                    <th>Session</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                {% for item in problem  %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.session.name }}</td>
+                    <td><a href="/console/edit/problem/{{item.name }}">Take Me there</a></td>
+                    <td><a href="/console/do_not_use/problem/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+        </div>
+    </div>
+{% endblock %}

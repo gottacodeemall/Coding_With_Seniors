@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="row">
+        {% for item in query  %}
+            <div class="col-lg-3">
+            <a href="/members/{{ item.display_name }}">
+            <div class="our-team-main">
+            <div class="team-front">
+            <img src="{{ item.display_pic }}" class="img-responsive" style="width:110px;height:110px" />
+            <h3>{{ item.display_name }}</h3>
+            <p>{{ item.normalized_rating }}</p>
+            </div>
+            <div class="team-back">
+            <span>
+                {{ item.bio }}
+            </span>
+            </div>
+
+            </div>
+                </a>
+            </div>
+
+        {% endfor %}
+
+
+    </div>
+    </div>
+
+{% endblock %}

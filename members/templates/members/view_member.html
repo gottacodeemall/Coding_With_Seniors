@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Members{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-4"><img class="img-responsive" src="{{ user.display_pic }}" style="width:150px;height:150px;border-radius: 50%;margin-bottom:10px;margin-left: 15px"></div>
+    </div>
+    <div class="row">
+
+    <div class="col">
+
+    <table class="table table-hover">
+        <tr><td>Display Name</td><td>{{ user.display_name }}</td> </tr>
+        <tr><td>BioData</td><td>{{ user.bio }}</td> </tr>
+        <tr><td>Elo Rating</td><td>{{ user.normalized_rating }}</td> </tr>
+        <tr><td>Registration Number</td><td>{{ user.reg_number }}</td> </tr>
+
+    </table>
+
+        <table class="table table-hover">
+        <tr>
+            <th>Site</th>
+            <th>URL</th>
+            <th>UserName</th>
+        </tr>
+        {% for item in site_user %}
+            <tr>
+            <td>{{ item.sites.sitename }}</td>
+            <td><a href="{{ item.url }}">Take Me There</a></td>
+            <td>{{ item.username_on_site }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    </div>
+    </div>
+
+{% endblock %}
