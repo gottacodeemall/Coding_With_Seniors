@@ -16,10 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-
+from home import views
 urlpatterns = [
-    #url(r'^$', views.home, name="home"),
-    #url(r'^challenges/', include('challenges.urls', namespace='challenges')),
+    url(r'^$', views.home, name="home"),
     url(r'^members/', include('members.urls', namespace='members')),
     url(r'^leaderboard/', include('leaderboard.urls', namespace='leaderboard')),
     url(r'^user/', include('user_profile.urls', namespace='user')),

@@ -19,6 +19,7 @@ from cws_site import settings
 
 from user_profile.forms import UserForm, UserProfileForm, LoginForm,CodingAccountForm
 from user_profile.models import Site_user,Site
+from events.models import PerSessionUserLikes,Session
 #logger = logging.getLogger(__name__)
 
 
@@ -46,6 +47,10 @@ def create_or_update_user(request: HttpRequest, user_form: UserForm, user_profil
             user_profile.user_info = user
             user_profile.save()
             if creating:
+                sessionlist = Session.objects.all()
+                for item in sessionlist:
+                    persessionuserlikes = PerSessionUserLikes(user=user_profile,session=item)
+                    persessionuserlikes.save()
                 messages.add_message(request, messages.SUCCESS, 'Congratulations ! Your user is created.')
                 t = authenticate(username=user.username, password=user_form.cleaned_data['password'])
                 if t is not None:

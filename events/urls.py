@@ -19,7 +19,12 @@ from django.conf.urls import url, include
 app_name="events"
 from . import views
 urlpatterns = [
-    path('sessions/',views.view_sessions, name="view_sessions"),
+    path('editorials/<str:name>',views.view_editorial,name="view_editorial"),
+    path('add_editorial/<str:problem_name>',views.add_editorial,name="add_editorial"),
+    path('like_editorial/<str:editorial_name>',views.like_editorial,name="like_editorial"),
+    path('sessions',views.view_sessions, name="view_sessions"),
+    path('problems',views.view_problems, name="view_problems"),
+    path('problems/<str:problem_name>',views.view_problem, name="view_problem"),
     path('sessions/<str:session_name>',views.view_session, name="view_session"),
     path('', views.view_events, name="view_events"),
     path('<str:event_name>',views.view_event, name="view_event"),

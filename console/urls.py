@@ -32,7 +32,8 @@ urlpatterns = [
     path('do_not_use/session/<str:session_name>',views.delete_session,name="delete_session"),
     path('do_not_use/event/<str:event_name>',views.delete_event,name="delete_event"),
     path('do_not_use/problem/<str:problem_name>',views.delete_problem,name="delete_problem"),
-    path('update_leaderboard/<str:name>',views.update_leaderboard,name="update_leaderboard")
-
+    path('update_leaderboard/<str:name>',views.update_leaderboard,name="update_leaderboard"),
+    path('update_rating/<str:name>',views.update_rating,name="update_rating"),
+    path('update_contributors',views.update_contributors,name="update_contributors")
 
 ]

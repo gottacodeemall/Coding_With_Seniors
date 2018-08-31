@@ -15,9 +15,9 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from cws_site import settings
 
-from events.models import Ranking,Event,Session,Problem,Tags
+from events.models import Ranking,Event,Session,Problem,Tags,PerSessionUserLikes
 from .forms import AddEventForm,AddSessionForm,AddProblemForm,RankForm
-from user_profile.models import Site
+from user_profile.models import Site,UserProfile
 # Create your views here.
 
 def add_rank(request: HttpRequest, rank_form: RankForm,name:str) -> HttpResponse:
@@ -70,6 +70,10 @@ def add_session(request: HttpRequest, session_form: AddSessionForm,creating:bool
                 eventid=Event.objects.get(name=event_name)
                 session = Session(name=session_form.cleaned_data['name'],date=session_form.cleaned_data['date'],description=session_form.cleaned_data['description'],event=eventid,test_name=session_form.cleaned_data['test_name'],test_url=session_form.cleaned_data['test_url'])
                 session.save()
+                userset=UserProfile.objects.all()
+                for userinst in userset:
+                    likescount=PerSessionUserLikes(session=session,user=userinst)
+                    likescount.save()
                 messages.add_message(request, messages.SUCCESS, 'Session Created')
             else:
                 session=session_form.instance
@@ -81,7 +85,7 @@ def add_session(request: HttpRequest, session_form: AddSessionForm,creating:bool
                 session.test_url = session_form.cleaned_data['test_url']
                 session.save()
                 messages.add_message(request,messages.SUCCESS,'Session Updated')
-            return HttpResponseRedirect("console/edit/event/{0}".format(event_name))
+            return HttpResponseRedirect("/console/edit/event/{0}".format(event_name))
         except Exception:
             # logger.exception('Error while creating/updating a user. creating=' + str(creating) + ', req=' + "\n".join(request.readlines()))
             request.session['messages'] = ['Sorry, an error occurred, please alert an admin.']
@@ -260,6 +264,104 @@ def delete_problem(request: HttpRequest,problem_name:str):
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return redirect(reverse('console:edit'))
+
+import math
+def probability(rating1,rating2):
+    return 1.0 * 1.0 / (1 + 1.0 * math.pow(10, 1.0 * (rating1 - rating2) / 400))
+
+def update_rating(request: HttpRequest,name:str):
+    #try:
+    session = Session.objects.get(name=name)
+    ranks = Ranking.objects.filter(session=session).order_by('rank')
+    init_rating=[]
+    all_users=User.objects.all()
+    participated_users=[]
+    for item in ranks:
+        participated_users.append(item.user)
+    idle_users=list(set(all_users) - set(participated_users))
+
+    for item in ranks:
+        userprofileinst=UserProfile.objects.get(user_info=item.user)
+        init_rating.append(userprofileinst.normalized_rating)
+    main=[]
+    total=ranks.count()
+    for i in range(total):
+        inside=[]
+        main.append(inside)
+
+    for i in range(total):
+        for j in range(i+1,total):
+            proba=probability(init_rating[i],init_rating[j])
+            probb = probability(init_rating[j], init_rating[i])
+            mod_a=init_rating[i]+100*(1-proba)
+            mod_b=init_rating[j]-100*probb
+            main[i].append(mod_a)
+            main[j].append(mod_b)
+
+    final_rating=[]
+    for i in range(total):
+        sum=0.0
+        leng=len(main[i])
+        for j in range(leng):
+            sum+=main[i][j]
+        avg=sum/float(leng)
+        final_rating.append(avg)
+    rating_change=[]
+    max_change=-120.0 #change this when you alter the value of K in Elo
+    element=-1
+    for i in range(total):
+        cur_change = final_rating[i] - init_rating[i]
+        rating_change.append(cur_change)
+        if(cur_change>=max_change):
+            element=i
+            max_change=cur_change
+
+    i=0
+    for item in ranks:
+        user_in=item.user
+        userprofin=UserProfile.objects.get(user_info=user_in)
+        userprofin.normalized_rating=final_rating[i]
+        userprofin.rating_change=rating_change[i]
+        userprofin.save()
+        i=i+1
+
+    for item in idle_users:
+        user_in = item.user
+        userprofin = UserProfile.objects.get(user_info=user_in)
+        userprofin.rating_change=0
+        userprofin.save()
+    user_in = item.user
+    userprofin = UserProfile.objects.get(user_info=user_in)
+    session.top_coder = userprofin.display_name
+    user_in = ranks[0].user
+    userprofin = UserProfile.objects.get(user_info=user_in)
+    session.top_coder=userprofin.display_name
+    session.save()
+    #except:
+        #messages.add_message(request, messages.ERROR, 'Error Contact Admin')
+    return redirect(reverse('leaderboard:view_leaderboard'))
+
+def update_contributors(request:HttpRequest):
+    sessionset=Session.objects.all()
+    for session in sessionset:
+        userset=UserProfile.objects.all()
+        max_likes_count=-1
+        if userset:
+            top_contri=userset[0]
+
+        for userinst in userset:
+            user_likes=PerSessionUserLikes(session=session,user=userinst)
+            likes=user_likes.count
+            if(likes>max_likes_count):
+                top_contri=userinst
+                max_likes_count=likes
+        session.top_contributor=top_contri.display_name
+        session.save()
+        messages.add_message(request, messages.SUCCESS, 'Updated Contributors')
+
+
+
+    return redirect(reverse('leaderboard:view_leaderboard'))
 
 
 

@@ -2,24 +2,25 @@
 {% load staticfiles %}
 
 {% block login_active %}active{% endblock %}
-{% block title %}{{ block.super }} | Events{% endblock %}
+{% block title %}{{ block.super }} | Sessions{% endblock %}
 {% block css %}
     <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet" id="bootstrap-css">
 {% endblock %}
 {% block body %}
     <div class="ui segment">
     <div class="ui container">
-    <h2>Events</h2>
+    <h2>Sessions</h2>
     {% if upzero %}
         <p>No Events</p>
     {% endif %}
-    {% for item in eventset %}
-        <a href="/events/{{ item.name }}" class="unstyle_link">
+    {% for item in sessionset %}
+        <a href="/events/sessions/{{ item.name }}" class="unstyle_link">
     <div class="row dabba" >
 
             <div class="col" >
                 <h2 style="margin-top:10px;margin-bottom: 4px">{{ item.name }}</h2>
-                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</h4>
+                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.event.name }}</h4>
+                <h6 style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</h6>
                 <p style="margin-top:10px;margin-bottom: 4px">{{ item.description }}</p>
             </div>
 

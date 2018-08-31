@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Home{% endblock %}
+{% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet" id="bootstrap-css">
+{% endblock %}
+{% block body %}
+    <div class="ui segment">
+    <div class="ui container">
+    <div class="ui grid">
+            <div class="sixteen wide column">
+                <div class="ui three stackable cards">
+                    {% if tcontval %}
+                    <div class="card">
+                        <div class="ui left piled segment">
+                            <img src="{{ u_tcont.display_pic }}" class="ui small left floated image">
+                            <h2 class="ui header text-center" style="margin-top: 0px;" >Top Contributor</h2>
+                            <div class="floated right text-center description">
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcont.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcont.normalized_rating }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if tcodval %}
+                    <div class="card">
+                        <div class="ui left piled segment">
+                            <img src="{{ u_tcod.display_pic }}" class="ui small left floated image">
+                            <h2 class="ui header text-center" style="margin-top: 0px;" >Top Coder</h2>
+                            <div class="floated right text-center description">
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcod.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcod.normalized_rating }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if timpval %}
+                    <div class="card">
+                        <div class="ui left piled segment">
+                            <img src="{{ u_tcont.display_pic }}" class="ui small left floated image">
+                            <h2 class="ui header text-center" style="margin-top: 0px;" >Top Improver</h2>
+                            <div class="floated right text-center description">
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_timp.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_timp.normalized_rating }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    <h2>Upcoming Sessions</h2>
+    {% if upzero %}
+        <p>No Upcoming Sessions</p>
+    {% endif %}
+    {% for item in upcoming %}
+        <a href="/events/sessions/{{ item.name }}" class="unstyle_link">
+    <div class="row dabba" style="margin:10px;border: lightgray;border-width:1px;border-radius: 5px;border-style: solid">
+
+            <div class="col" >
+                <h2 style="margin-top:10px;margin-bottom: 4px">{{ item.name }}</h2>
+                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.event.name }}</h4>
+                <p style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</p>
+                <p style="margin-top:10px;margin-bottom: 4px">{{ item.description }}</p>
+            </div>
+
+    </div>
+        </a>
+    {%  endfor %}
+    <h2>Past Sessions</h2>
+    {% for item in passed %}
+        <a href="/events/sessions/{{ item.name }}" class="unstyle_link">
+    <div class="row dabba" style="margin:10px;border: lightgray;border-width:1px;border-radius: 5px;border-style: solid">
+
+            <div class="col" >
+            <h2 style="margin-top:10px;margin-bottom: 4px">{{ item.name }}</h2>
+                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.event.name }}</h4>
+            <p style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</p>
+            <p style="margin-top:10px;margin-bottom: 4px">{{ item.description }}</p>
+            </div>
+
+    </div>
+        </a>
+    {%  endfor %}
+    </div>
+    </div>
+{% endblock %}

@@ -178,5 +178,20 @@ body{
 	transition:0.5s;
 }
 
+.unstyle_link{
+    text-decoration: none;
+    color: black;
+}
+.unstyle_link:hover{
+    text-decoration: none;
+    color: black;
+}
+
 /*our-team-main*/
+.dabba{
+    margin:10px;border: lightgray;border-width:1px;border-radius: 5px;border-style: solid;
+}
+.dabba:hover{
+    background-color: #d0d0d0;
+}
 

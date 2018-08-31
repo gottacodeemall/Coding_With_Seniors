@@ -9,14 +9,14 @@
     <div class="row">
         {% for item in query  %}
             <div class="col-lg-3">
-            <a href="/members/{{ item.display_name }}">
-            <div class="our-team-main">
+            <a href="/members/{{ item.display_name }}" class="unstyle_link">
+            <div class="our-team-main" >
             <div class="team-front">
             <img src="{{ item.display_pic }}" class="img-responsive" style="width:110px;height:110px" />
             <h3>{{ item.display_name }}</h3>
             <p>{{ item.normalized_rating }}</p>
             </div>
-            <div class="team-back">
+            <div class="team-back" style="text-align: center;top:30%">
             <span>
                 {{ item.bio }}
             </span>

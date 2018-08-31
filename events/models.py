@@ -5,7 +5,7 @@ from user_profile.models import UserProfile
 from django.contrib.auth.models import User
 
 class Event(models.Model):
-    name= models.CharField(max_length=255, blank=False, null=True)
+    name= models.CharField(max_length=255, blank=False, null=True,unique=True)
     date=models.DateField(blank=False, null=True)
     description=models.TextField( blank=False, null=True)
 
@@ -15,7 +15,7 @@ class Event(models.Model):
 
 class Session(models.Model):
     event=models.ForeignKey(Event,on_delete=models.CASCADE)
-    name=models.CharField(max_length=255, blank=False, null=True)
+    name=models.CharField(max_length=255, blank=False, null=True,unique=True)
     date=date=models.DateField(blank=False, null=True)
     description = models.TextField(blank=False, null=True)
     test_name=models.CharField(max_length=255,blank=True, null=True)
@@ -26,13 +26,20 @@ class Session(models.Model):
     def __str__(self) -> str:
         return '{0}'.format(self.name)
 
+class PerSessionUserLikes(models.Model):
+    count=models.PositiveIntegerField(default=0,null=True)
+    user=models.OneToOneField(UserProfile,on_delete=models.CASCADE)
+    session=models.ForeignKey(Session,on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return '{0} has {1} likes for {2} session'.format(self.user.name,self.count,self.session.name)
+
 class Tags(models.Model):
     type=models.CharField(max_length=255,blank=False, null=True)
     def __str__(self) -> str:
         return '{0}'.format(self.type)
 
 class Problem(models.Model):
-    name=models.CharField(max_length=255, blank=False, null=True)
+    name=models.CharField(max_length=255, blank=False, null=True,unique=True)
     url_problem=models.URLField(blank=False, null=True)
     solution=models.CharField(max_length=255, blank=True, null=True)
     url_solution=models.URLField(blank=True, null=True)
@@ -42,9 +49,11 @@ class Problem(models.Model):
         return '{0}'.format(self.name)
 
 class Editorial(models.Model):
-    user_submitted=models.OneToOneField(UserProfile,on_delete=models.CASCADE)
-    problem=models.OneToOneField(Problem,on_delete=models.CASCADE)
+    name=models.CharField(max_length=255, blank=False, null=True,unique=True)
+    user_submitted=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    problem=models.ForeignKey(Problem,on_delete=models.CASCADE)
     solution=models.TextField(blank=False,null=True)
+    solution_url=models.URLField(blank=True,null=True)
     liked_users=models.ManyToManyField(User,blank=True)
     def __str__(self) -> str:
         return '{0} : {1}'.format(self.problem.name,self.user_submitted.display_name)
@@ -52,7 +61,7 @@ class Editorial(models.Model):
 
 class Ranking(models.Model):
     rank = models.PositiveIntegerField(blank=False, null=True)
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
 
     def __str__(self) -> str:

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Editorial{% endblock %}
+{% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet" id="bootstrap-css">
+{% endblock %}
+{% block body %}
+    <div class="ui segment">
+    <div class="ui container">
+    <div class="row" style="margin-bottom: 15px">
+        <div class="col">
+            <h2>Problem - {{ editorial.problem.name }}</h2>
+            <h4>{{ editorial.user_submitted.display_name }}</h4>
+            <h6>Solution </h6>
+            <p>{{ editorial.solution }}</p>
+            <a href="{{ editorial.solution_url }}">Solution URL</a>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px">
+        <a href="/events/like_editorial/{{ editorial.name }}"><button class="btn btn-default">LIKE</button></a>
+    </div>
+
+    </div>
+    </div>
+{% endblock %}

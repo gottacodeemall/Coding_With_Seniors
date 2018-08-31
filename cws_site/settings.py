@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'members.apps.MembersConfig',
     'leaderboard.apps.LeaderboardConfig',
     'events.apps.EventsConfig',
-    'console.apps.ConsoleConfig'
+    'console.apps.ConsoleConfig',
+    'home.apps.HomeConfig'
 ]
 
 MIDDLEWARE = [

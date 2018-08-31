@@ -5,9 +5,9 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
     user_info= models.OneToOneField(User, on_delete=models.CASCADE)
-    display_name=models.CharField(max_length=255, blank=True, null=True)
+    display_name=models.CharField(max_length=255, blank=True, null=True,unique=True)
     display_pic = models.URLField(default="https://media.giphy.com/media/l46C6sdSa5DVSJnLG/giphy.gif")
-    reg_number=models.CharField(max_length=255, blank=True, null=True)
+    reg_number=models.CharField(max_length=255, blank=True, null=True,unique=True)
     bio=models.CharField(max_length=255, blank=True, null=True)
     rating_change=models.IntegerField(default=0)
     normalized_rating=models.PositiveIntegerField(default=1200)
@@ -15,9 +15,9 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return str(self.user_info)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.normalized_rating = 0  # updated dynamically
+ #   def __init__(self, *args, **kwargs):
+#       super().__init__(*args, **kwargs)
+#        self.normalized_rating = 1200  # updated dynamically
 
 
 class Site(models.Model):

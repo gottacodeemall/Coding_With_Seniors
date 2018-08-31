@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Problems{% endblock %}
+{% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet" id="bootstrap-css">
+{% endblock %}
+{% block body %}
+    <div class="ui segment">
+    <div class="ui container">
+    <h2>Problems</h2>
+    {% if upzero %}
+        <p>No Problems</p>
+    {% endif %}
+    <table class="table table-hover test">
+        <tr>
+            <th>Problem Name</th>
+            <th>URL</th>
+            <th>View Problem</th>
+        </tr>
+        {% for item in problem_set  %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td><a href="{{item.url_problem }}">Problem Link</a></td>
+            <td><a href="/events/problems/{{item.name }}">Take Me there</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+{% endblock %}

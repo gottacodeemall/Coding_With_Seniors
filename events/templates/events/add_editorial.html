@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block login_active %}active{% endblock %}
+{% block title %}{{ block.super }} | Editorial{% endblock %}
+{% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" rel="stylesheet" id="bootstrap-css">
+{% endblock %}
+{% block body %}
+    <div class="ui segment">
+    <div class="ui container">
+    <div class="row" style="margin-bottom: 15px">
+        <div class="col">
+                <div class="card card-block">
+                    <form method="post" action="" id="form-login">
+                        <fieldset>
+                            {% for field in editorial_form %}
+                                <div class="md-form {% if field.errors %}has-error{% endif %}">
+                                    {{ field }}
+                                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                    {% for error in field.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <button type="submit" class="btn btn-default">Add</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px">
+        <a href="/events/like_editorial/{{ editorial.name }}"><button class="btn btn-default">LIKE</button></a>
+    </div>
+
+    </div>
+    </div>
+{% endblock %}
