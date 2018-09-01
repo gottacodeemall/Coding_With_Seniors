@@ -17,8 +17,10 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from cws_site import settings
 
-from .models import UserProfile,Event,Session,Problem,Editorial,PerSessionUserLikes
+from .models import UserProfile,Event,Session,Problem,Editorial,PerSessionUserLikes,ReadingMaterial
 from .forms import AddEditorialForm
+
+
 def view_events(request: HttpRequest) -> HttpResponse:
     try:
         eventset=Event.objects.all().order_by('-date')
@@ -51,7 +53,7 @@ def view_session(request: HttpRequest,session_name:str) -> HttpResponse:
     try:
         session = Session.objects.get(name=session_name)
         problem_set=Problem.objects.filter(session=session)
-
+        material_set=ReadingMaterial.objects.filter(session=session)
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/session.html',locals())
@@ -70,6 +72,7 @@ def view_problem(request: HttpRequest,problem_name:str) -> HttpResponse:
     try:
         problem=Problem.objects.get(name=problem_name)
         editorialset=Editorial.objects.filter(problem=problem)
+        tags=problem.tags.all()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/problem.html',locals())
@@ -81,6 +84,10 @@ def view_editorial(request: HttpRequest,name:str):
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/editorial.html',locals())
 
+@login_required
+@sensitive_post_parameters()
+@csrf_protect
+@require_http_methods(["GET", "POST"])
 def add_editorial(request: HttpRequest,problem_name:str):
     try:
         problem=Problem.objects.get(name=problem_name)
@@ -94,24 +101,35 @@ def add_editorial(request: HttpRequest,problem_name:str):
                                     solution=editorial_form.cleaned_data['solution'],
                                     solution_url=editorial_form.cleaned_data['solution_url'])
                 editorial.save()
+                messages.add_message(request, messages.SUCCESS, 'Editorial Added')
         else:
             editorial_form = AddEditorialForm()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/editorial.html',locals())
 
+@login_required
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
+@require_http_methods(["GET", "POST"])
 def like_editorial(request: HttpRequest,editorial_name:str):
     try:
         editorial=Editorial.objects.get(name=editorial_name)
         problem=editorial.problem
         session=problem.session
         userprof=UserProfile.objects.get(user_info=request.user)
-        editorial.liked_users.add(userprof)
-        editorial.save()
-        persessionuserlikes=PerSessionUserLikes.objects.get(user=request.user,session=session)
-        persessionuserlikes.count=persessionuserlikes.count+1
-        persessionuserlikes.save()
-        messages.add_message(request, messages.SUCCESS, 'Liked the Editorial')
+        user=request.user
+        liked_users=editorial.liked_users.all()
+        if user in liked_users:
+            messages.add_message(request, messages.INFO, 'You have already liked this Editorial')
+        else:
+            editorial.liked_users.add(userprof)
+            editorial.save()
+            persessionuserlikes=PerSessionUserLikes.objects.get(user=request.user,session=session)
+            persessionuserlikes.count=persessionuserlikes.count+1
+            persessionuserlikes.save()
+            messages.add_message(request, messages.SUCCESS, 'Liked the Editorial')
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/editorial.html',locals())

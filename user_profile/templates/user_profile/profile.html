@@ -8,13 +8,13 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row vertical-centered" id="team-header">
-            {% if user_profile.avatar %}
+            {% if user_profile.display_pic %}
                 <div class="col-lg-3 hidden-lg-down">
                     <img src="{{ user_profile.display_pic}}" alt="&nbsp;" class="abs-center img-fluid profile-gif"
-                         id="team-logo">
+                         id="team-logo" height="150px" width="150px" >
                 </div>
             {% endif %}
-           
+        </div>
 
         <div class="row" style="margin-top: 20px">
             <div class="col">
@@ -65,8 +65,13 @@
                 </div>
             </div>
         </div>
-
+        <div class="row" style="margin-top: 20px">
+            <div class="col">
+                <a href="/user/coding_accounts/"><button class="btn btn-default">Add Coding Accounts</button></a>
+            </div>
+        </div>
     </div>
+
 {% endblock %}
 
 {% block javascript %}

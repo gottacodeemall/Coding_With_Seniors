@@ -38,6 +38,22 @@
     <div class="row">
          <table class="table table-hover test">
         <tr>
+            <th>Material Name</th>
+            <th>Type</th>
+            <th>View Material</th>
+        </tr>
+        {% for item in material_set  %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.type }}</td>
+            <td><a href="{{item.url }}">Go to material</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="row">
+         <table class="table table-hover test">
+        <tr>
             <th>Problem Name</th>
             <th>URL</th>
             <th>View Problem</th>
@@ -52,22 +68,6 @@
     </table>
     </div>
 
-    {% if upzero %}
-        <p>No Events</p>
-    {% endif %}
-    {% for item in eventset %}
-        <a href="/events/{{ item.name }}" class="unstyle_link">
-    <div class="row border-0" style="margin:10px;background-color: lightgray;border-radius: 5px">
-
-            <div class="col" >
-                <h2 style="margin-top:10px;margin-bottom: 4px">{{ item.name }}</h2>
-                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</h4>
-                <p style="margin-top:10px;margin-bottom: 4px">{{ item.description }}</p>
-            </div>
-
-    </div>
-        </a>
-    {%  endfor %}
     </div>
     </div>
 {% endblock %}

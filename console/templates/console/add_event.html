@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block login_active %}active{% endblock %}
-{% block title %}{{ block.super }} | Members{% endblock %}
+{% block title %}{{ block.super }} | Console{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 10px">
         <div class="col">
             {% if not add %}
                 <a href="/console/add/session/{{ event.name }}"><button class="btn btn-default">Add Session</button></a>

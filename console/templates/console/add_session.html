@@ -2,12 +2,13 @@
 {% load staticfiles %}
 
 {% block login_active %}active{% endblock %}
-{% block title %}{{ block.super }} | Members{% endblock %}
+{% block title %}{{ block.super }} | Console{% endblock %}
 
 {% block body %}
         <div class="container">
         <div class="row">
         <div class="col">
+            <p>Name of Contest, Contest URL can be left blank to be updated later.</p>
             <div class="card card-block">
                 <form method="post" action="" id="form-login2">
                     <fieldset>
@@ -44,21 +45,23 @@
 
     </div>
     </div>
-        <div class="row">
+    <div class="row">
         <div class="col">
             {% if not add %}
-                <h3>Problems</h3>
+                <h3>Reading Material</h3>
                 <table class="table table-hover test">
                     <tr>
                         <th>Name</th>
+                        <th>Type</th>
+                        <th>URL</th>
                         <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
-                    {% for item in problems  %}
+                    {% for item in readingmaterial  %}
                     <tr>
                         <td>{{ item.name }}</td>
-                        <td><a href="/console/edit/problem/{{item.name }}">Take Me there</a></td>
-                        <td><a href="/console/do_not_use/problem/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+                        <td>{{ item.type }}</td>
+                        <td><a href="{{item.url }}">URL</a></td>
+                        <td><a href="/console/edit/readingmaterial/{{item.name }}">Edit</a></td>
                     </tr>
                     {% endfor %}
                  </table>
@@ -68,10 +71,39 @@
     <div class="row">
         <div class="col">
             {% if not add %}
-                <a href="/console/add/problem/{{ session.name }}"><button class="btn btn-default">Add Problem</button></a>
+                <a href="/console/add/readingmaterial/{{ session.name }}"><button class="btn btn-default">Add Reading Material</button></a>
             {%  endif %}
-        </div>
-        </div>
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="col">
+        {% if not add %}
+            <h3>Problems</h3>
+            <table class="table table-hover test">
+                <tr>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                {% for item in problems  %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td><a href="/console/edit/problem/{{item.name }}">Take Me there</a></td>
+                    <td><a href="/console/do_not_use/problem/{{item.name }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+             </table>
+        {%  endif %}
+    </div>
+    </div>
+<div class="row">
+    <div class="col">
+        {% if not add %}
+            <a href="/console/add/problem/{{ session.name }}"><button class="btn btn-default">Add Problem</button></a>
+        {%  endif %}
+    </div>
+    </div>
 
     </div>
 

@@ -21,12 +21,15 @@ class UserProfileForm(forms.ModelForm):
         self.fields['display_name'].widget.attrs.update({
             'class': 'form-control validate',
         })
+        self.fields['display_name'].required=True
 
-        self.fields['reg_number'].label = 'NITC Registration Number'
+        self.fields['reg_number'].label = 'NITC Registration Number-in CAPITALS'
         self.fields['reg_number'].widget.attrs.update({
             'class': 'form-control validate',
         })
-        self.fields['bio'].label = 'Short Description'
+        self.fields['reg_number'].required = True
+
+        self.fields['bio'].label = 'Short Description/Tag Line'
         self.fields['bio'].widget.attrs.update({
             'class': 'form-control validate',
         })
@@ -118,7 +121,7 @@ class CodingAccountForm(forms.ModelForm):
         fields = ['username_on_site','sites','url']
     def __init__(self, *args, **kwargs):
         super(CodingAccountForm, self).__init__(*args, **kwargs)
-        self.fields['username_on_site'].label = 'username'
+        self.fields['username_on_site'].label = 'Username on platform'
         self.fields['username_on_site'].widget.attrs.update({
             'class': 'form-control validate',
         })
@@ -127,7 +130,7 @@ class CodingAccountForm(forms.ModelForm):
             'class': 'form-control validate',
         })
 
-        self.fields['sites'].label = 'Site'
+        self.fields['sites'].label = 'Platform'
         self.fields['sites'].widget.attrs.update({
             'class': 'form-control validate',
         })

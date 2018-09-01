@@ -13,6 +13,14 @@
         <div class="col">
             <h2> Name - {{ problem.name }}</h2>
             <a href="{{ problem.url_problem }}">Problem Link</a>
+            {% if tags %}
+            <h4>Tags</h4>
+            {% endif %}
+            <h5>
+                {% for item in tags %}
+                    {{ item.type }},
+                {% endfor %}
+            </h5>
             {% if problem.solution %}
             <h4>Solution - {{ problem.solution }}</h4>
             <a href="{{ problem.url_solution }}">Solution Link</a>

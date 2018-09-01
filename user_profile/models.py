@@ -6,7 +6,7 @@ from django.utils import timezone
 class UserProfile(models.Model):
     user_info= models.OneToOneField(User, on_delete=models.CASCADE)
     display_name=models.CharField(max_length=255, blank=True, null=True,unique=True)
-    display_pic = models.URLField(default="https://media.giphy.com/media/l46C6sdSa5DVSJnLG/giphy.gif")
+    display_pic = models.URLField(default="https://cdn4.iconfinder.com/data/icons/ui-standard/96/People-512.png")
     reg_number=models.CharField(max_length=255, blank=True, null=True,unique=True)
     bio=models.CharField(max_length=255, blank=True, null=True)
     rating_change=models.IntegerField(default=0)

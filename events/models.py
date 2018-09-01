@@ -27,11 +27,11 @@ class Session(models.Model):
         return '{0}'.format(self.name)
 
 class PerSessionUserLikes(models.Model):
-    count=models.PositiveIntegerField(default=0,null=True)
-    user=models.OneToOneField(UserProfile,on_delete=models.CASCADE)
+    count=models.PositiveIntegerField(default=0,null=True,blank=False)
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
     session=models.ForeignKey(Session,on_delete=models.CASCADE)
     def __str__(self) -> str:
-        return '{0} has {1} likes for {2} session'.format(self.user.name,self.count,self.session.name)
+        return '{0} has {1} likes for {2} session'.format(self.user.display_name,self.count,self.session.name)
 
 class Tags(models.Model):
     type=models.CharField(max_length=255,blank=False, null=True)
@@ -60,9 +60,17 @@ class Editorial(models.Model):
 
 
 class Ranking(models.Model):
-    rank = models.PositiveIntegerField(blank=False, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rank = models.PositiveIntegerField(blank=False, null=True,unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,unique=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return '{0}: {1}'.format(self.rank, self.user.display_name)
+
+class ReadingMaterial(models.Model):
+    name=models.CharField(max_length=255, blank=False, null=True,unique=True)
+    session=models.ForeignKey(Session, on_delete=models.CASCADE,default=None)
+    type=models.CharField(max_length=255, blank=False, null=True)
+    url=models.URLField(blank=True, null=True)
+    def __str__(self) -> str:
+        return '{0}'.format(self.name)

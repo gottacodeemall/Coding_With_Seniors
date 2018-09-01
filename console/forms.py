@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.admin import widgets
-from events.models import Event,Session,Problem,Ranking
+from events.models import Event,Session,Problem,Ranking,ReadingMaterial
 
 class AddEventForm(forms.ModelForm):
     class Meta:
@@ -32,7 +32,7 @@ class AddProblemForm(forms.ModelForm):
         fields = ['name', 'url_problem', 'solution','url_solution','tags']
     def __init__(self, *args, **kwargs):
         super(AddProblemForm, self).__init__(*args, **kwargs)
-        self.fields['name'].label = "Name"
+        self.fields['name'].label = "Name/ID"
         self.fields['name'].widget.attrs.update({
             'class': 'form-control validate',
         })
@@ -49,7 +49,7 @@ class AddProblemForm(forms.ModelForm):
             'class': 'form-control validate date-input',
         })
 
-        self.fields['tags'].label = 'Tag'
+        self.fields['tags'].label = 'Tag(use ctrl+click for multiple tags)'
         self.fields['tags'].widget.attrs.update({
             'class': 'form-control validate',
         })
@@ -98,6 +98,24 @@ class RankForm(forms.ModelForm):
             'class': 'form-control validate',
         })
 
+class AddReadingForm(forms.ModelForm):
+    class Meta:
+        model = ReadingMaterial
+        fields = ['name','url','type']
+    def __init__(self, *args, **kwargs):
+        super(AddReadingForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = 'Name'
+        self.fields['name'].widget.attrs.update({
+            'class': 'form-control validate',
+        })
+        self.fields['url'].label = "Link to material"
+        self.fields['url'].widget.attrs.update({
+            'class': 'form-control validate',
+        })
+        self.fields['type'].label = "Type(Reading/Video/anything)"
+        self.fields['type'].widget.attrs.update({
+            'class': 'form-control validate',
+        })
 
 
 

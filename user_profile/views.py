@@ -60,7 +60,7 @@ def create_or_update_user(request: HttpRequest, user_form: UserForm, user_profil
             return redirect(reverse('user:profile'))
         except Exception:
             #logger.exception('Error while creating/updating a user. creating=' + str(creating) + ', req=' + "\n".join(request.readlines()))
-            request.session['messages'] = ['Sorry, an error occurred, please alert an admin.']
+            messages.add_message(request, messages.ERROR, 'Error, Contact Admin')
     return None
 
 
@@ -117,7 +117,7 @@ def login_user(request: HttpRequest) -> HttpResponse:
             else:
                 login(request, user)
                 messages.add_message(request, messages.SUCCESS, "You've been successfully logged in.")
-                return redirect(request.GET.get('next', reverse('user:profile')))
+                return redirect(request.GET.get('next', reverse('home')))
     else:
         login_form = LoginForm()
     return render(request, 'user_profile/login.html', locals())
@@ -173,11 +173,11 @@ def update_user_coding_account(request: HttpRequest, coding_account_form: Coding
                             )
             
             site.save()
-            request.session['messages'] = ['Successfully ']    
+            messages.add_message(request, messages.SUCCESS, 'Created Successfully.')
             return redirect(reverse('user:coding_accounts'))
         except Exception:
             #logger.exception('Error while creating/updating a user. creating=' + str(creating) + ', req=' + "\n".join(request.readlines()))
-            request.session['messages'] = ['Sorry, an error occurred, please alert an admin.']
+            messages.add_message(request, messages.ERROR, 'Sorry, an error occurred, please alert an admin.')
     return None
 
 @login_required

@@ -21,12 +21,14 @@ from . import views
 urlpatterns = [
     path('',views.console,name="edit"),
     path('add/session/<str:event_name>',views.add_session_view,name="add_session"),
+    path('add/readingmaterial/<str:session_name>',views.add_reading_view,name="add_reading"),
     path('add/event',views.add_event_view,name="add_event"),
     path('add/problem/<str:session_name>',views.add_problem_view,name="add_problem"),
     path('add/ranking',views.add_event_view,name="add_ranking"),
     path('add/site',views.add_event_view,name="add_site"),
     path('add/tag',views.add_event_view,name="add_tag"),
     path('edit/problem/<str:problem_name>',views.edit_problem,name="edit_problem"),
+    path('edit/readingmaterial/<str:reading_name>',views.edit_reading,name="edit_reading"),
     path('edit/event/<str:event_name>',views.edit_event,name="edit_event"),
     path('edit/session/<str:session_name>',views.edit_session,name="edit_session"),
     path('do_not_use/session/<str:session_name>',views.delete_session,name="delete_session"),
@@ -34,6 +36,7 @@ urlpatterns = [
     path('do_not_use/problem/<str:problem_name>',views.delete_problem,name="delete_problem"),
     path('update_leaderboard/<str:name>',views.update_leaderboard,name="update_leaderboard"),
     path('update_rating/<str:name>',views.update_rating,name="update_rating"),
-    path('update_contributors',views.update_contributors,name="update_contributors")
+    path('update_contributors',views.update_contributors,name="update_contributors"),
+    path('delete_rank/<str:s_name>/<str:rank>',views.delete_rank,name="delete_rank")
 
 ]

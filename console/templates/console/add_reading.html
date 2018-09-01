@@ -2,17 +2,17 @@
 {% load staticfiles %}
 
 {% block login_active %}active{% endblock %}
-{% block title %}{{ block.super }} | Console{% endblock %}
+{% block title %}{{ block.super }} | Material{% endblock %}
 
 {% block body %}
     <div class="container">
-    <p>Solution, solution URL can be left blank to be updated later.</p>
+
     <div class="row">
         <div class="col">
             <div class="card card-block">
                 <form method="post" action="" id="form-login">
                     <fieldset>
-                        {% for field in problem_form %}
+                        {% for field in reading_form %}
                             <div class="md-form {% if field.errors %}has-error{% endif %}">
                                 {{ field }}
                                 <label for="id_{{ field.name }}">{{ field.label }}</label>
@@ -25,7 +25,7 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <div class="col-md-10 col-md-offset-2">
-                                <button class="btn btn-default" type="submit" name="add_event">Add/Modify Problem</button>
+                                <button class="btn btn-default" type="submit" name="add_reading">Add/Modify Material</button>
                             </div>
                         </div>
 

@@ -2,18 +2,25 @@
 {% load staticfiles %}
 
 {% block login_active %}active{% endblock %}
-{% block title %}{{ block.super }} | Members{% endblock %}
+{% block title %}{{ block.super }} | Console{% endblock %}
 
 {% block body %}
     <div class="container">
     <div class="row">
         <div class="col">
-            <h3>Update Contributors</h3>
+            <h3>Instructions</h3>
+            <p>Events, Sessions,Problems, Reading Materials can be created, edited or deleted here.</p>
+            <p>To create a session. Go to edit event. To create problem, update leaderboard, add reading materials go to edit session.</p>
+            <p>Tags and Sites can be altered only by admin.</p>
+            <p>Update Contributor- updates the most likes a user got for every session. Use this to calculate top contributor.</p>
+            <p>Update Leaderboard- Should only be clicked ONCE after all the ranks have been updated. Multiple clicks changes rating multiple times.</p>
+            <p>While editing tags to a problem. only add tags and never delete tags from the problem. </p>
+            <p>Can create a session for upcoming date for it to appear in upcooming in Home page. </p>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <h3>Instructions</h3>
+            <h3>Update Contributors</h3>
             <a href="/console/update_contributors"><button class="btn btn-default">Update Contributors</button></a>
         </div>
     </div>
