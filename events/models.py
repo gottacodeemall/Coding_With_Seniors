@@ -62,7 +62,7 @@ class Editorial(models.Model):
 
 class Ranking(models.Model):
     rank = models.PositiveIntegerField(blank=False, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
 
     def __str__(self) -> str:

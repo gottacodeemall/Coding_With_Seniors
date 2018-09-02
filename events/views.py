@@ -17,7 +17,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from cws_site import settings
 
-from .models import UserProfile,Event,Session,Problem,Editorial,PerSessionUserLikes,ReadingMaterial
+from .models import UserProfile,Event,Session,Problem,Editorial,PerSessionUserLikes,ReadingMaterial,Ranking
 from .forms import AddEditorialForm
 
 
@@ -54,6 +54,7 @@ def view_session(request: HttpRequest,session_name:str) -> HttpResponse:
         session = Session.objects.get(name=session_name)
         problem_set=Problem.objects.filter(session=session)
         material_set=ReadingMaterial.objects.filter(session=session)
+        ranks=Ranking.objects.filter(session=session).order_by('rank')
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/session.html',locals())
