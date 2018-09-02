@@ -13,13 +13,13 @@
         <div class="col">
             <h2>Problem - {{ editorial.problem.name }}</h2>
             <h4>{{ editorial.user_submitted.display_name }}</h4>
-            <h6>Solution </h6>
+            <h3>Solution </h3>
             <p>{{ editorial.solution }}</p>
             <a href="{{ editorial.solution_url }}">Solution URL</a>
         </div>
     </div>
     <div class="row" style="margin-bottom: 10px">
-        <a href="/events/like_editorial/{{ editorial.name }}"><button class="btn btn-default">LIKE</button></a>
+        <a href="/events/like_editorial/{{ editorial.name }}"><i class="fa fa-thumbs-up fa-3x"></i></a>
     </div>
 
     </div>

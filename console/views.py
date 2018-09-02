@@ -401,67 +401,75 @@ def probability(rating1,rating2):
 def update_rating(request: HttpRequest,name:str):
     try:
         session = Session.objects.get(name=name)
-        ranks = Ranking.objects.filter(session=session).order_by('rank')
-        init_rating=[]
-        all_users=User.objects.all()
-        participated_users=[]
-        for item in ranks:
-            participated_users.append(item.user)
-        idle_users=list(set(all_users) - set(participated_users))
+        if not session.rating_updated:
+            ranks = Ranking.objects.filter(session=session).order_by('rank')
+            init_rating=[]
+            all_users=User.objects.all()
+            participated_users=[]
+            for item in ranks:
+                participated_users.append(item.user)
+            idle_users=list(set(all_users) - set(participated_users))
 
-        for item in ranks:
-            init_rating.append(item.user.userprofile.normalized_rating)
-        main=[]
-        total=ranks.count()
-        for i in range(total):
-            inside=[]
-            main.append(inside)
+            for item in ranks:
+                init_rating.append(item.user.userprofile.normalized_rating)
+            main=[]
+            total=ranks.count()
+            for i in range(total):
+                inside=[]
+                main.append(inside)
 
-        for i in range(total):
-            for j in range(i+1,total):
-                proba=probability(init_rating[i],init_rating[j])
-                probb = probability(init_rating[j], init_rating[i])
-                mod_a=init_rating[i]+100*(1-proba)
-                mod_b=init_rating[j]-100*probb
-                main[i].append(mod_a)
-                main[j].append(mod_b)
+            for i in range(total):
+                for j in range(i+1,total):
+                    proba=probability(init_rating[i],init_rating[j])
+                    probb = probability(init_rating[j], init_rating[i])
+                    mod_a=init_rating[i]+400*(proba)
+                    mod_b=init_rating[j]-400*(1-probb)
+                    main[i].append(mod_a)
+                    main[j].append(mod_b)
 
-        final_rating=[]
-        for i in range(total):
-            sum=0.0
-            leng=len(main[i])
-            for j in range(leng):
-                sum+=main[i][j]
-            avg=sum/float(leng)
-            final_rating.append(avg)
-        rating_change=[]
-        max_change=-120.0 #change this when you alter the value of K in Elo
-        element=-1
-        for i in range(total):
-            cur_change = final_rating[i] - init_rating[i]
-            rating_change.append(cur_change)
-            if(cur_change>=max_change):
-                element=i
-                max_change=cur_change
+            final_rating=[]
+            for i in range(total):
+                sum=0.0
+                leng=len(main[i])
+                for j in range(leng):
+                    sum+=main[i][j]
+                avg=sum/float(leng)
+                if avg>2200:
+                    avg=2200
+                elif avg<200:
+                    avg=200
+                final_rating.append(avg)
+            rating_change=[]
+            max_change=-400.0 #change this when you alter the value of K in Elo
+            element=-1
+            for i in range(total):
+                cur_change = final_rating[i] - init_rating[i]
+                rating_change.append(cur_change)
+                if(cur_change>=max_change):
+                    element=i
+                    max_change=cur_change
 
-        i=0
-        for item in ranks:
-            userprofin=item.user.userprofile
-            userprofin.normalized_rating=final_rating[i]
-            userprofin.rating_change=rating_change[i]
-            userprofin.save()
-            i=i+1
+            i=0
+            for item in ranks:
+                userprofin=item.user.userprofile
+                userprofin.normalized_rating=final_rating[i]
+                userprofin.rating_change=rating_change[i]
+                userprofin.save()
+                i=i+1
 
-        for item in idle_users:
-            userprofin = item.userprofile
-            userprofin.rating_change=0
-            userprofin.save()
-        userprofin = ranks[element].user.userprofile
-        session.top_improver = userprofin.display_name
-        userprofin = ranks[0].user.userprofile
-        session.top_coder=userprofin.display_name
-        session.save()
-        messages.add_message(request, messages.SUCCESS, 'Leaderboard,Top Coder, Top Improver Updated')
+            for item in idle_users:
+                userprofin = item.userprofile
+                userprofin.rating_change=0
+                userprofin.save()
+            userprofin = ranks[element].user.userprofile
+            session.top_improver = userprofin.display_name
+            userprofin = ranks[0].user.userprofile
+            session.top_coder=userprofin.display_name
+            session.rating_updated=True
+            session.save()
+            messages.add_message(request, messages.SUCCESS, 'Leaderboard,Top Coder, Top Improver Updated')
+        else:
+            messages.add_message(request, messages.ERROR, 'Rating has already been updated.')
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return redirect(reverse('leaderboard:view_leaderboard'))
@@ -481,7 +489,7 @@ def update_contributors(request:HttpRequest):
                 top_contri=userset[0]
 
             for userinst in userset:
-                user_likes=PerSessionUserLikes(session=session,user=userinst)
+                user_likes=PerSessionUserLikes.objects.get(session=session,user=userinst)
                 likes=user_likes.count
                 if(likes>max_likes_count):
                     top_contri=userinst

@@ -48,7 +48,7 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         #https://stackoverflow.com/questions/19197684/clarification-when-where-to-use-super-in-django-python
         #why super- super gives parent objects
-        self.fields['username'].label = 'Username'
+        self.fields['username'].label = 'Username (Format: firstname_lastname)'
         self.fields['username'].widget.attrs.update({
             'class': 'form-control validate',
         })

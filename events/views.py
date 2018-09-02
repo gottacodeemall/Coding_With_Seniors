@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpRequest
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -71,7 +71,7 @@ def view_problems(request: HttpRequest) -> HttpResponse:
 def view_problem(request: HttpRequest,problem_name:str) -> HttpResponse:
     try:
         problem=Problem.objects.get(name=problem_name)
-        editorialset=Editorial.objects.filter(problem=problem)
+        editorialset=Editorial.objects.filter(problem=problem).order_by()
         tags=problem.tags.all()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
@@ -91,7 +91,7 @@ def view_editorial(request: HttpRequest,name:str):
 def add_editorial(request: HttpRequest,problem_name:str):
     try:
         problem=Problem.objects.get(name=problem_name)
-        user_submit=UserProfile.objects.get(user_info=request.user)
+        user_submit=request.user.userprofile
         if request.method == "POST":
             editorial_form = AddEditorialForm(request.POST)
             if not editorial_form.is_valid():
@@ -102,11 +102,12 @@ def add_editorial(request: HttpRequest,problem_name:str):
                                     solution_url=editorial_form.cleaned_data['solution_url'])
                 editorial.save()
                 messages.add_message(request, messages.SUCCESS, 'Editorial Added')
+                return HttpResponseRedirect("/events/problems/{0}".format(problem_name))
         else:
             editorial_form = AddEditorialForm()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
-    return render(request,'events/editorial.html',locals())
+    return render(request,'events/add_editorial.html',locals())
 
 @login_required
 @sensitive_post_parameters()
@@ -123,13 +124,16 @@ def like_editorial(request: HttpRequest,editorial_name:str):
         liked_users=editorial.liked_users.all()
         if user in liked_users:
             messages.add_message(request, messages.INFO, 'You have already liked this Editorial')
+        elif user.userprofile == editorial.user_submitted:
+            messages.add_message(request, messages.ERROR, 'You cannot like your own editorial.')
         else:
-            editorial.liked_users.add(userprof)
+            editorial.liked_users.add(request.user)
             editorial.save()
-            persessionuserlikes=PerSessionUserLikes.objects.get(user=request.user,session=session)
+            persessionuserlikes=PerSessionUserLikes.objects.get(user=request.user.userprofile,session=session)
             persessionuserlikes.count=persessionuserlikes.count+1
             persessionuserlikes.save()
             messages.add_message(request, messages.SUCCESS, 'Liked the Editorial')
+            return HttpResponseRedirect("/events/problems/{0}".format(problem.name))
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/editorial.html',locals())

@@ -34,36 +34,22 @@
         <h4>Editorials</h4>
          <table class="table table-hover test">
         <tr>
+            <th>Name of Editorial</th>
             <th>Submitted By </th>
-            <th>Solution_URL</th>
+            <th>Likes</th>
             <th>Editorial</th>
         </tr>
         {% for item in editorialset  %}
         <tr>
+            <td>{{ item.name }}</td>
             <td>{{ item.user_submitted }}</td>
-            <td>{{ item.solution_url }}</td>
+            <td>{{ item.liked_users.count }}</td>
             <td><a href="/events/editorials/{{ item.name }}">Take Me there</a></td>
         </tr>
         {% endfor %}
     </table>
     </div>
 
-    {% if upzero %}
-        <p>No Events</p>
-    {% endif %}
-    {% for item in eventset %}
-        <a href="/events/{{ item.name }}" class="unstyle_link">
-    <div class="row border-0" style="margin:10px;background-color: lightgray;border-radius: 5px">
-
-            <div class="col" >
-                <h2 style="margin-top:10px;margin-bottom: 4px">{{ item.name }}</h2>
-                <h4 style="margin-top:10px;margin-bottom: 4px">{{ item.date }}</h4>
-                <p style="margin-top:10px;margin-bottom: 4px">{{ item.description }}</p>
-            </div>
-
-    </div>
-        </a>
-    {%  endfor %}
     </div>
     </div>
 {% endblock %}

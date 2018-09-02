@@ -23,6 +23,7 @@ class Session(models.Model):
     top_coder=models.CharField(max_length=255, blank=True, null=True)
     top_contributor=models.CharField(max_length=255, blank=True, null=True)
     top_improver=models.CharField(max_length=255, blank=True, null=True)
+    rating_updated=models.BooleanField(default=False)
     def __str__(self) -> str:
         return '{0}'.format(self.name)
 
