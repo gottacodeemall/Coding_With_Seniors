@@ -72,11 +72,13 @@
         <tr>
             <th>#</th>
             <th>Username</th>
+            <td>Display Name</td>
             <th>View Profile</th>
         </tr>
         {% for item in ranks  %}
         <tr>
             <td>{{ item.rank }}</td>
+            <td>{{ item.user.username}}</td>
             <td>{{ item.user.userprofile.display_name}}</td>
             <td><a href="/members/{{item.user.userprofile.display_name }}">Take Me there</a></td>
         </tr>

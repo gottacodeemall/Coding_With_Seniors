@@ -64,7 +64,8 @@ class Ranking(models.Model):
     rank = models.PositiveIntegerField(blank=False, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-
+    class Meta:
+        unique_together = ("rank", "user","session")
     def __str__(self) -> str:
         return '{0}: {1}'.format(self.rank, self.user.display_name)
 

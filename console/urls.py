@@ -37,6 +37,6 @@ urlpatterns = [
     path('update_leaderboard/<str:name>',views.update_leaderboard,name="update_leaderboard"),
     path('update_rating/<str:name>',views.update_rating,name="update_rating"),
     path('update_contributors',views.update_contributors,name="update_contributors"),
-    path('delete_rank/<str:s_name>/<str:rank>',views.delete_rank,name="delete_rank")
+    path('delete_rank/<str:s_name>/<str:name>/<str:rank>',views.delete_rank,name="delete_rank")
 
 ]

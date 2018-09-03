@@ -22,13 +22,13 @@ from user_profile.models import Site,UserProfile
 @staff_member_required
 @csrf_protect
 @require_http_methods(["GET", "POST"])
-def delete_rank(request: HttpRequest,s_name:str,rank:str):
+def delete_rank(request: HttpRequest,s_name:str,name:str,rank:str):
     try:
         session=Session.objects.get(name=s_name)
-        user_inst=User.objects.get(username=rank)
-        ranks=Ranking.objects.get(session=session,user=user_inst)
+        user_inst=User.objects.get(username=name)
+        ranks=Ranking.objects.get(session=session,user=user_inst,rank=rank)
         ranks.delete()
-        messages.add_message(request, messages.ERROR, 'Deleted')
+        messages.add_message(request, messages.SUCCESS, 'Deleted')
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return HttpResponseRedirect("/console/update_leaderboard/{0}".format(s_name))
@@ -50,6 +50,7 @@ def add_rank(request: HttpRequest, rank_form: RankForm,name:str) -> HttpResponse
         except Exception:
             # logger.exception('Error while creating/updating a user. creating=' + str(creating) + ', req=' + "\n".join(request.readlines()))
             messages.add_message(request, messages.ERROR, 'Sorry, an error occurred, please alert an admin.')
+            messages.add_message(request, messages.INFO, 'Check if row already exists in DB.')
     return None
 @staff_member_required
 @sensitive_post_parameters()
@@ -422,8 +423,8 @@ def update_rating(request: HttpRequest,name:str):
                 for j in range(i+1,total):
                     proba=probability(init_rating[i],init_rating[j])
                     probb = probability(init_rating[j], init_rating[i])
-                    mod_a=init_rating[i]+400*(proba)
-                    mod_b=init_rating[j]-400*(1-probb)
+                    mod_a=init_rating[i]+200*(proba)
+                    mod_b=init_rating[j]-200*(1-probb)
                     main[i].append(mod_a)
                     main[j].append(mod_b)
 

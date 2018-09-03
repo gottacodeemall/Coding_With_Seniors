@@ -12,13 +12,15 @@
             <tr>
                 <th>#</th>
                 <th>Display_Name</th>
+                <th>User_Name</th>
                 <th>Delete</th>
             </tr>
             {% for item in ranks  %}
             <tr>
                 <td>{{ item.rank }}</td>
                 <td>{{ item.user.userprofile.display_name }}</td>
-                <td><a href="/console/delete_rank/{{ session.name }}/{{ item.user.username }}" onclick="return confirm('Are you sure?')">Delete rank</a></td>
+                <td>{{ item.user.username }}</td>
+                <td><a href="/console/delete_rank/{{ session.name }}/{{ item.user.username }}/{{ item.rank }}" onclick="return confirm('Are you sure?')">Delete rank</a></td>
             </tr>
             {% endfor %}
         </table>

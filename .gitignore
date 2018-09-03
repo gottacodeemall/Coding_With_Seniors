@@ -3,3 +3,13 @@
 
 # Database
 *.sqlite3
+
+#intellij
+*.idea
+
+*.cpython-37.pyc
+#cache files
+__pycache__/
+console/__pycache__/
+events/__pycache__/
+migrations/
