@@ -22,31 +22,30 @@ from user_profile.models import UserProfile
 def home(request: HttpRequest):
     try:
         now = timezone.now()
-        upcoming = Session.objects.filter(date__gte=now).order_by('date')
-        passed = Session.objects.filter(date__lt=now).order_by('-date')
+        upcomingall = Session.objects.filter(date__gte=now).order_by('date')
+        upcoming=upcomingall[:5]
+        passedall = Session.objects.filter(date__lt=now).order_by('-date')
+        passed = passedall[:5]
         upzero=False
         if upcoming.count()==0:
             upzero=True
         if(passed):
-            latestpassed=passed[0]
-            tcod=latestpassed.top_coder
-            tcont = latestpassed.top_contributor
-            timp = latestpassed.top_improver
-            if tcod is not None:
-                u_tcod = get_object_or_404(UserProfile, display_name=tcod)
-                tcodval=True
-            else:
-                tcodval=False
-            if tcont is not None:
-                u_tcont= get_object_or_404(UserProfile, display_name=tcont)
-                tcontval=True
-            else:
-                tcont=False
-            if timp is not None:
-                u_timp = get_object_or_404(UserProfile, display_name=timp)
-                timpval=True
-            else:
-                timpval=False
+            tcodbool=False
+            timpbool=False
+            tcontbool=False
+            for item in passed:
+                if item.top_coder and not tcodbool:
+                    u_tcod=get_object_or_404(UserProfile, display_name=item.top_coder)
+                    tcodbool=True
+                    tcod_session=item.name
+                if item.top_contributor and not tcontbool:
+                    u_tcont=get_object_or_404(UserProfile, display_name=item.top_contributor)
+                    tcontbool=True
+                    tcont_session=item.name
+                if item.top_improver and not timpbool:
+                    u_timp=get_object_or_404(UserProfile, display_name=item.top_improver)
+                    timpbool=True
+                    timp_session=item.name
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request, 'home/home.html', locals())

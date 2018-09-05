@@ -12,49 +12,52 @@
     <div class="ui grid">
             <div class="sixteen wide column">
                 <div class="ui three stackable cards">
-                    {% if tcontval %}
+                    {% if tcontbool %}
 
                     <div class="card">
                     <a href="/members/{{ u_tcont.display_name }}" class="unstyle_link">
                         <div class="ui left piled segment">
                             <img src="{{ u_tcont.display_pic }}" class="ui small left floated image">
                             <div class="floated right text-center description">
-                                <h2 class="ui header text-center" style="margin-top: 0px;" >Top Contributor</h2>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcont.display_name }}</h4>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcont.normalized_rating }}</h4>
+                                <h2 class="ui header text-center" style="margin-top: 0px;margin-bottom: 15px;" >Top Contributor</h2>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_tcont.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_tcont.normalized_rating }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >Session: {{ tcont_session }}</h4>
                             </div>
                         </div>
                         </a>
                     </div>
 
                     {% endif %}
-                    {% if tcodval %}
+                    {% if tcodbool %}
 
                     <div class="card">
                     <a href="/members/{{ u_tcod.display_name }}" class="unstyle_link">
                         <div class="ui left piled segment">
                             <img src="{{ u_tcod.display_pic }}" class="ui small left floated image">
                             <div class="floated right text-center description">
-                                <h2 class="ui header text-center" style="margin-top: 0px;" >Top Coder</h2>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcod.display_name }}</h4>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_tcod.normalized_rating }}</h4>
+                                <h2 class="ui header text-center" style="margin-top: 0px;margin-bottom: 15px;" >Top Coder</h2>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_tcod.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_tcod.normalized_rating }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >Session: {{ tcod_session }}</h4>
                             </div>
                         </div>
                     </a>
                     </div>
 
                     {% endif %}
-                    {% if timpval %}
+                    {% if timpbool %}
 
                     <div class="card">
                     <a href="/members/{{ u_timp.display_name }}" class="unstyle_link">
                         <div class="ui left piled segment">
-                            <img src="{{ u_timp.display_pic }}" class="ui small left floated image">
+                            <img src="{{ u_timp.display_pic }}" class="ui small left floated image img-responsive">
 
                             <div class="floated right text-center description">
-                                <h2 class="ui header text-center" style="margin-top: 0px;" >Top Improver</h2>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_timp.display_name }}</h4>
-                                <h4 class="ui header text-center" style="margin-top: 0px;" >{{ u_timp.normalized_rating }}</h4>
+                                <h2 class="ui header text-center" style="margin-top: 0px;margin-bottom: 15px;" >Top Improver</h2>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_timp.display_name }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;margin-bottom: 9px;" >{{ u_timp.normalized_rating }}</h4>
+                                <h4 class="ui header text-center" style="margin-top: 0px;" >Session: {{ timp_session }}</h4>
                             </div>
                         </div>
                         </a>
