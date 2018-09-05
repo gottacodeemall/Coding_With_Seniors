@@ -77,8 +77,8 @@ def update_leaderboard(request: HttpRequest,name:str):
 @require_http_methods(["GET", "POST"])
 def console(request: HttpRequest):
     try:
-        events=Event.objects.all()
-        sessions=Session.objects.all()
+        events=Event.objects.all().order_by('-date')
+        sessions=Session.objects.all().order_by('-date')
         problem=Problem.objects.all()
         tags=Tags.objects.all()
         site=Site.objects.all()
@@ -485,17 +485,16 @@ def update_contributors(request:HttpRequest):
         sessionset=Session.objects.all()
         for session in sessionset:
             userset=UserProfile.objects.all()
-            max_likes_count=-1
-            if userset:
-                top_contri=userset[0]
-
+            max_likes_count=0
+            top_contri=None
             for userinst in userset:
                 user_likes=PerSessionUserLikes.objects.get(session=session,user=userinst)
                 likes=user_likes.count
                 if(likes>max_likes_count):
                     top_contri=userinst
                     max_likes_count=likes
-            session.top_contributor=top_contri.display_name
+            if top_contri is not None:
+                session.top_contributor=top_contri.display_name
             session.save()
         messages.add_message(request, messages.SUCCESS, 'Updated Contributors')
     except:

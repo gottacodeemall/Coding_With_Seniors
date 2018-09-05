@@ -130,7 +130,7 @@ def like_editorial(request: HttpRequest,editorial_name:str):
         else:
             editorial.liked_users.add(request.user)
             editorial.save()
-            persessionuserlikes=PerSessionUserLikes.objects.get(user=request.user.userprofile,session=session)
+            persessionuserlikes=PerSessionUserLikes.objects.get(user=editorial.user_submitted,session=session)
             persessionuserlikes.count=persessionuserlikes.count+1
             persessionuserlikes.save()
             messages.add_message(request, messages.SUCCESS, 'Liked the Editorial')
