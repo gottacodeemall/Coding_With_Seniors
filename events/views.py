@@ -35,6 +35,7 @@ def view_event(request: HttpRequest,event_name:str) -> HttpResponse:
     try:
         event=Event.objects.get(name=event_name)
         session_set=Session.objects.filter(event=event)
+        sc=session_set.count()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/event.html',locals())
@@ -53,8 +54,11 @@ def view_session(request: HttpRequest,session_name:str) -> HttpResponse:
     try:
         session = Session.objects.get(name=session_name)
         problem_set=Problem.objects.filter(session=session)
+        psc=problem_set.count()
         material_set=ReadingMaterial.objects.filter(session=session)
+        matc = material_set.count()
         ranks=Ranking.objects.filter(session=session).order_by('rank')
+        rc=ranks.count()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
     return render(request,'events/session.html',locals())

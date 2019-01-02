@@ -17,6 +17,7 @@
             <p>{{ event.description }}</p>
         </div>
     </div>
+    {%  if sc != 0 %}
     <div class="row">
          <table class="table table-hover test">
         <tr>
@@ -33,7 +34,7 @@
         {% endfor %}
     </table>
     </div>
-
+    {%  endif %}
     {% if upzero %}
         <p>No Events</p>
     {% endif %}
