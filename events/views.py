@@ -77,6 +77,7 @@ def view_problem(request: HttpRequest,problem_name:str) -> HttpResponse:
     try:
         problem=Problem.objects.get(name=problem_name)
         editorialset=Editorial.objects.filter(problem=problem).order_by()
+        ec=editorialset.count()
         tags=problem.tags.all()
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')

@@ -30,6 +30,7 @@
     <div class="row" style="margin-bottom: 10px">
         <a href="/events/add_editorial/{{ problem.name }}"><button class="btn btn-default">Add YOUR Editorial</button></a>
     </div>
+    {% if ec != 0 %}
     <div class="row">
         <h4>Editorials</h4>
          <table class="table table-hover test">
@@ -49,7 +50,7 @@
         {% endfor %}
     </table>
     </div>
-
+    {% endif %}
     </div>
     </div>
 {% endblock %}
