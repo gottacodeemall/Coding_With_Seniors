@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '3!+$ffvsf7dx44so(l@bqpfh90!b0%
 #DEBUG = True
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['cws-nitc.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['cws-nitc.herokuapp.com','127.0.0.1','localhost','lets-code-nitc.herokuapp.com']
 
 
 # Application definition
