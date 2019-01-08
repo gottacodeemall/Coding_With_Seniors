@@ -48,4 +48,5 @@ def home(request: HttpRequest):
                     timp_session=item.name
     except:
         messages.add_message(request, messages.ERROR, 'Error Contact Admin')
+    messages.add_message(request, messages.WARNING, 'Chrome has Navbar issues. Use Firefox for optimal Experience.')
     return render(request, 'home/home.html', locals())
